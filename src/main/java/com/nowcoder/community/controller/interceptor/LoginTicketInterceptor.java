@@ -14,6 +14,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.Date;
 
+/**
+ * 让本次会话持有用户数据（就是ticket），并在退出时删除ticket
+ */
 @Component
 public class LoginTicketInterceptor implements HandlerInterceptor{
 
