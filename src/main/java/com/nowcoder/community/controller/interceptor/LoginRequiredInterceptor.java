@@ -11,6 +11,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.lang.reflect.Method;
 
+/**
+ * 用来拦截登录后才能访问的请求
+ */
 @Component
 public class LoginRequiredInterceptor implements HandlerInterceptor {
 

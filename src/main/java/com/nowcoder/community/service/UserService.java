@@ -6,6 +6,7 @@ import com.nowcoder.community.entity.LoginTicket;
 import com.nowcoder.community.entity.User;
 import com.nowcoder.community.util.CommunityConstant;
 import com.nowcoder.community.util.CommunityUtil;
+import com.nowcoder.community.util.HostHolder;
 import com.nowcoder.community.util.MailClient;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,6 +34,9 @@ public class UserService implements CommunityConstant {
 
     @Autowired
     private LoginTicketMapper loginTicketMapper;
+
+    @Autowired
+    private HostHolder hostHolder;
 
     @Value("${community.path.domain}")
     private String domain;
@@ -208,6 +212,56 @@ public class UserService implements CommunityConstant {
      */
     public int updateHeader(int userId, String headerUrl) {
         return userMapper.updateHeader(userId, headerUrl);
+    }
+
+    /**
+     * 修改用户密码（同时更新hostHolder）
+     * @param oldPassword
+     * @param newPassword
+     * @param confirmPassword
+     * @return
+     */
+    public Map<String, Object> updatePassword(String oldPassword, String newPassword, String confirmPassword) {
+        Map<String, Object> map = new HashMap<>();
+
+        // 空值处理
+        if(StringUtils.isBlank(oldPassword)) {
+            map.put("oldPasswordMsg", "密码不能为空！");
+            return map;
+        }
+        if(StringUtils.isBlank(newPassword)) {
+            map.put("newPasswordMsg", "密码不能为空！");
+            return map;
+        }
+        if(StringUtils.isBlank(confirmPassword) || ! newPassword.equals(confirmPassword)) {
+            map.put("confirmPasswordMsg", "两次输入的密码不一致！");
+            return map;
+        }
+
+        // 新密码与旧密码相同
+        if(newPassword.equals(oldPassword)) {
+            map.put("newPasswordMsg", "新旧密码相同！");
+            return map;
+        }
+
+        // 核查密码
+        User user = hostHolder.getUser();
+        oldPassword = CommunityUtil.md5(oldPassword + user.getSalt());
+        if(! oldPassword.equals(user.getPassword())) {
+            map.put("oldPasswordMsg", "旧密码有误！");
+            return map;
+        }
+
+        int id = user.getId();
+        newPassword = CommunityUtil.md5(newPassword + user.getSalt());
+        userMapper.updatePassword(id, newPassword);
+
+        // 更新hostHolder
+        hostHolder.clear();
+        user = userMapper.selectById(id);
+        hostHolder.setUser(user);
+
+        return map;
     }
 
 }
