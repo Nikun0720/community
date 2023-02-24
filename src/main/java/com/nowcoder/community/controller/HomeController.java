@@ -8,6 +8,7 @@ import com.nowcoder.community.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
@@ -25,6 +26,12 @@ public class HomeController {
     @Autowired
     private UserService userService;
 
+    /**
+     * 获取首页页面
+     * @param model
+     * @param page
+     * @return
+     */
     @RequestMapping(path = "/index", method = RequestMethod.GET)
     public String getIndexPage(Model model, Page page) {
         // 方法调用前,SpringMVC会自动实例化Model和Page,并将Page注入Model.
@@ -45,6 +52,15 @@ public class HomeController {
         }
         model.addAttribute("discussPosts", discussPosts);
         return "/index";
+    }
+
+    /**
+     * 出现错误时，统一跳到500页面
+     * @return
+     */
+    @GetMapping("/error")
+    public String getErrorPage() {
+        return "/error/500";
     }
 
 }
