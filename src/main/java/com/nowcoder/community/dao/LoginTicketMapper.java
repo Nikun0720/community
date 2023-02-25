@@ -16,6 +16,7 @@ import org.apache.ibatis.annotations.*;
 */
 
 @Mapper
+@Deprecated  // 这个注解表示不建议使用这个组件了
 public interface LoginTicketMapper {
 
     // 可以通过注解的方式写sql，就不用对应的.xml文件了
