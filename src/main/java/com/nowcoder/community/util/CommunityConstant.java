@@ -39,6 +39,9 @@ public interface CommunityConstant {
     // 主题：关注
     String TOPIC_FOLLOW = "follow";
 
+    //主题：发帖（这个是同步到es服务器上使用的）
+    String TOPIC_PUBLISH = "publish";
+
     // 系统用户id
     int SYSTEM_USER_ID = 1;
 
