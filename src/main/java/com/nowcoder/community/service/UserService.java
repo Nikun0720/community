@@ -9,14 +9,12 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.stereotype.Service;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.Context;
 
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Random;
+import java.util.*;
 import java.util.concurrent.TimeUnit;
 
 @Service
@@ -329,6 +327,36 @@ public class UserService implements CommunityConstant {
         String redisKey = RedisKeyUtil.getUserKey(userId);
 
         redisTemplate.delete(redisKey);
+    }
+
+    /**
+     * 根据用户获得用户权限
+     * 事实上，getAuthorities这个方法应该是User这个entity实现UserDetail接口后重写的
+     * 但这个项目不需要用User实现那个接口，但仍需要提供一个返回权限的方法
+     * 对于User重写UserDetail的getAuthorities方法，它的返回类型是Collection，这是因为一个用户可能有多个权限
+     * 这里不是重写但也用了Collection，对应那个方法
+     * @param userId
+     * @return
+     */
+    public Collection<? extends GrantedAuthority> getAuthorities(int userId) {
+        User user = userMapper.selectById(userId);
+
+        List<GrantedAuthority> list = new ArrayList<>();
+        list.add(new GrantedAuthority() {
+            @Override
+            public String getAuthority() {
+                switch (user.getType()) {
+                    case 1:
+                        return AUTHORITY_ADMIN;
+                    case 2:
+                        return AUTHORITY_MODERATOR;
+                    default:
+                        return AUTHORITY_USER;
+                }
+            }
+        });
+
+        return list;
     }
 
 }

@@ -72,4 +72,13 @@ public class HomeController implements CommunityConstant {
         return "/error/500";
     }
 
+    /**
+     * 拒绝访问时（登录权限不足），统一跳到404页面
+     * @return
+     */
+    @GetMapping("/denied")
+    public String getDeniedPage() {
+        return "/error/404";
+    }
+
 }
