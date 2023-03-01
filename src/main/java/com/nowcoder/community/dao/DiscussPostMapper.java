@@ -9,7 +9,15 @@ import java.util.List;
 @Mapper
 public interface DiscussPostMapper {
 
-    List<DiscussPost> selectDiscussPosts(int userId, int offset, int limit);
+    /**
+     *
+     * @param userId
+     * @param offset
+     * @param limit
+     * @param orderMode 为0时，按置顶和发布时间来排；为1时，按热度（score）来排
+     * @return
+     */
+    List<DiscussPost> selectDiscussPosts(int userId, int offset, int limit, int orderMode);
 
     // @Param注解用于给参数取别名,
     // 如果只有一个参数,并且在<if>里使用,则必须加别名.
@@ -52,5 +60,13 @@ public interface DiscussPostMapper {
      * @return
      */
     int updateStatus(int id, int status);
+
+    /**
+     * 修改帖子分数
+     * @param id
+     * @param score
+     * @return
+     */
+    int updateScore(int id, double score);
 
 }

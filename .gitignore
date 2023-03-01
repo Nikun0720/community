@@ -30,3 +30,7 @@ HELP.md
 
 ### self setting
 src/test
+src/main/java/com/nowcoder/community/service/TestService.java
+src/main/java/com/nowcoder/community/quartz/AlphaJob.java
+src/main/java/com/nowcoder/community/config/AlphaQuartzConfig.java
+src/main/java/com/nowcoder/community/config/ThreadPoolConfig.java
