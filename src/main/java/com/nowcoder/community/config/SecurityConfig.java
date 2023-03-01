@@ -76,7 +76,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter implements Comm
                         AUTHORITY_MODERATOR
                 )
                 .antMatchers(
-                        "/discuss/delete"
+                        "/discuss/delete",
+                        "/data/**"
                 )
                 .hasAnyAuthority(
                         AUTHORITY_ADMIN
@@ -116,7 +117,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter implements Comm
                     public void handle(HttpServletRequest request, HttpServletResponse response, AccessDeniedException e) throws IOException, ServletException {
                         String xRequestedWith = request.getHeader("x-requested-with");
 
-                        if(xRequestedWith.equals("XMLHttpRequest")) {
+                        if("XMLHttpRequest".equals(xRequestedWith)) {
                             // 如果该字符串是"XMLHttpRequest"，那么这个请求就是异步的
                             response.setContentType("application/plain;charset=utf-8");
 

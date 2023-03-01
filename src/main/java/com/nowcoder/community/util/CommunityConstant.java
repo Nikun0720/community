@@ -73,4 +73,11 @@ public interface CommunityConstant {
     // 权限：版主
     String AUTHORITY_MODERATOR = "moderator";
 
+    /*帖子展示时的排序方法*/
+    // 按时间排序（含置顶）
+    String POST_ORDER_TIME = "0";
+
+    // 按热度（score）排序（含置顶）
+    String POST_ORDER_HOT = "1";
+
 }

@@ -21,6 +21,15 @@ public class RedisKeyUtil {
 
     private static final String PREFIX_USER = "user";
 
+    // 用于统计 UV相关数据 的前缀
+    private static final String PREFIX_UV = "uv";
+
+    // 用于统计 DAU相关数据 的前缀
+    private static final String PREFIX_DAU = "dau";
+
+    // 同于 统计帖子分数 的前缀
+    private static final String PREFIX_POST = "post";
+
     /**
      * 某个实体的赞，存入redis的形式如下
      * like:entity:entityType:entityId -> set(userId)
@@ -91,6 +100,54 @@ public class RedisKeyUtil {
      */
     public static String getUserKey(int userId) {
         return PREFIX_USER + SPLIT + userId;
+    }
+
+    /**
+     * 统计单日uv（独立访客）
+     * @param date
+     * @return
+     */
+    public static String getUVKey(String date) {
+        return PREFIX_UV + SPLIT + date;
+    }
+
+    /**
+     * 统计区间UV（独立访客）
+     * 区间就是从哪天到哪天
+     * @param startDate
+     * @param endDate
+     * @return
+     */
+    public static String getUVKey(String startDate, String endDate) {
+        return PREFIX_UV + SPLIT + startDate + SPLIT + endDate;
+    }
+
+    /**
+     * 统计DAU（单日活跃用户）
+     * @param date
+     * @return
+     */
+    public static String getDAUKey(String date) {
+        return PREFIX_DAU + SPLIT + date;
+    }
+
+    /**
+     * 统计区间DAU（单日活跃用户）
+     * 区间就是从哪天到哪天
+     * @param startDate
+     * @param endDate
+     * @return
+     */
+    public static String getDAUKey(String startDate, String endDate) {
+        return PREFIX_DAU + SPLIT + startDate + SPLIT + endDate;
+    }
+
+    /**
+     * 返回统计帖子分数的key
+     * @return
+     */
+    public static String getPostScoreKey() {
+        return PREFIX_POST + SPLIT + "score";
     }
 
 }
