@@ -60,6 +60,9 @@ public interface CommunityConstant {
     //主题：删帖（这个是同步到es服务器上使用的）
     String TOPIC_DELETE = "delete";
 
+    // 主题：分享（这个是用wk生成长图那个功能使用的）
+    String TOPIC_SHARE = "share";
+
     // 系统用户id
     int SYSTEM_USER_ID = 1;
 
