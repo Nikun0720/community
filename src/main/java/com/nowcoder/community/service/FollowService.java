@@ -59,8 +59,8 @@ public class FollowService implements CommunityConstant {
 
                 operations.multi();
 
-                operations.opsForZSet().remove(followeeKey, entityId, System.currentTimeMillis());
-                operations.opsForZSet().remove(followerKey, userId, System.currentTimeMillis());
+                operations.opsForZSet().remove(followeeKey, entityId);
+                operations.opsForZSet().remove(followerKey, userId);
 
                 return operations.exec();
             }

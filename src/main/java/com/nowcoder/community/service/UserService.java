@@ -208,9 +208,12 @@ public class UserService implements CommunityConstant {
 //        loginTicketMapper.updateStatus(ticket, 1);
         String redisKey = RedisKeyUtil.getTicketKey(ticket);
 
-        LoginTicket loginTicket = (LoginTicket) redisTemplate.opsForValue().get(redisKey);
-        loginTicket.setStatus(1);
-        redisTemplate.opsForValue().set(redisKey, loginTicket);
+        //LoginTicket loginTicket = (LoginTicket) redisTemplate.opsForValue().get(redisKey);
+        //loginTicket.setStatus(1);
+        //redisTemplate.opsForValue().set(redisKey, loginTicket);
+
+        // 直接删掉redis中的ticket，而不是把状态设置成1
+        redisTemplate.delete(redisKey);
     }
 
     /**
