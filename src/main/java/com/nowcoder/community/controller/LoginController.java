@@ -172,8 +172,15 @@ public class LoginController implements CommunityConstant {
     }
 
     @GetMapping("/logout")
-    public String logout(@CookieValue("ticket") String ticket) {
+    public String logout(@CookieValue("ticket") String ticket, HttpServletResponse response) {
         userService.logout(ticket);
+
+        // 自己加的，因为想让redis在用户退出后直接删掉ticket
+        // 因此这里cookie中的ticket也得删除
+        Cookie cookie = new Cookie("ticket", ticket);
+        cookie.setMaxAge(0);
+        response.addCookie(cookie);
+
 
         SecurityContextHolder.clearContext();
 
